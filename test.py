@@ -9,7 +9,17 @@ import time
 from datetime import datetime
 
 # 微博内容
-WEIBO_CONTENT = "test"
+WEIBO_CONTENT = "copilot万岁！o(*￣▽￣*)ブ"
+
+# 微博标签（示例）。将你想要的标签放在这个列表中，程序会把它们格式化为 #标签# 并拼接到正文前面
+TAGS = ["茶几5mini不好用", "还得是克劳德酱w"]
+
+def build_weibo_message():
+    """根据 TAGS 和 WEIBO_CONTENT 生成最终要发布的文本"""
+    if TAGS:
+        tags_part = ' '.join(f"#{t}#" for t in TAGS)
+        return f"{tags_part} {WEIBO_CONTENT}"
+    return WEIBO_CONTENT
 
 # 定时发布时间
 SCHEDULED_TIME = "2025-11-06 22:57:45"
@@ -71,7 +81,9 @@ def post_weibo():
             EC.presence_of_element_located((By.XPATH, '//textarea[@placeholder="有什么新鲜事想分享给大家？"]'))
         )
         post_box.click()
-        post_box.send_keys(WEIBO_CONTENT)
+        # 构建最终发布内容（将标签并入正文前）
+        message = build_weibo_message()
+        post_box.send_keys(message)
 
         # 点击发布按钮
         post_button = WebDriverWait(driver, 20).until(
